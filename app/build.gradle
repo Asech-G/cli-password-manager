@@ -1,0 +1,40 @@
+plugins {
+    id 'application'
+}
+
+group = 'mx.cli.manager'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Test
+    testImplementation( libs.junit.jupiter )
+    testRuntimeOnly( "org.junit.platform:junit-platform-launcher" )
+    //Lombok
+    compileOnly( libs.lombok )
+    annotationProcessor( libs.lombok )
+    //PicoCli
+    implementation( libs.picocli )
+    annotationProcessor( libs.picocli.codegen )
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'mx.cli.manager.App'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
